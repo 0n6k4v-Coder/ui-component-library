@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capsule Floating Navbar — Demo</title>
+<link rel="stylesheet" href="capsule-navbar.css">
+<style>
+  /* Demo-only styles — not part of the component. Just here so the
+     white capsule has a plain black canvas to float over. */
+  html, body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #0a0a0a;
+    overflow-x: hidden;
+  }
+</style>
+</head>
+<body>
+
+<!--
+  This markup is a copy of capsule-navbar.html, inlined here so the demo
+  works as a plain static file (double-click to open) without needing a
+  local server to fetch a separate partial. In a real project, this block
+  lives in capsule-navbar.html and you paste it into your own page.
+-->
+<nav class="capsule-navbar" data-capsule-navbar>
+  <div class="capsule-navbar__bar">
+    <a class="capsule-navbar__logo" href="#" aria-label="Logo">
+      <svg class="capsule-navbar__logo-mark" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7.2a4.8 4.8 0 1 0 0 9.6 4.8 4.8 0 0 0 0-9.6Zm0 2.4a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8Z"/>
+      </svg>
+      <span class="capsule-navbar__logo-word">Logo</span>
+    </a>
+
+    <div class="capsule-navbar__menu">
+      <a class="capsule-navbar__link" href="#">Menu 1</a>
+      <a class="capsule-navbar__link" href="#">Menu 2</a>
+      <a class="capsule-navbar__link" href="#">Menu 3</a>
+    </div>
+
+    <button
+      class="capsule-navbar__toggle"
+      type="button"
+      data-capsule-navbar-toggle
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="capsule-navbar-panel-1"
+    >
+      <span class="capsule-navbar__icon" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="capsule-navbar__panel" id="capsule-navbar-panel-1" data-capsule-navbar-panel>
+    <div class="capsule-navbar__panel-inner">
+      <a class="capsule-navbar__panel-link" href="#">Menu 1</a>
+      <a class="capsule-navbar__panel-link" href="#">Menu 2</a>
+      <a class="capsule-navbar__panel-link" href="#">Menu 3</a>
+    </div>
+  </div>
+</nav>
+
+<script src="capsule-navbar.js"></script>
+
+</body>
+</html>

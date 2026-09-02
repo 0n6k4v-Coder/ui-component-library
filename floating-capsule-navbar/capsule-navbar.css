@@ -1,0 +1,280 @@
+/* =====================================================================
+   CAPSULE NAVBAR — component styles
+   Scope: everything is prefixed with .capsule-navbar / --cnb- so this
+   file can be linked into any existing page/design-system without
+   clashing with host classes or custom properties.
+   ===================================================================== */
+
+:root{
+  /* ---- design tokens (safe to retheme per project) ---- */
+  --cnb-surface:      #ffffff;   /* capsule background */
+  --cnb-ink:           #0a0a0a;  /* primary text/icon color */
+  --cnb-ink-muted:      #6b6b6b; /* secondary text (expanded panel hover) */
+  --cnb-ink-faint:      rgba(10, 10, 10, 0.5); /* desktop link default state */
+  --cnb-shadow:        0 10px 30px rgba(0, 0, 0, 0.35), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+
+  --cnb-radius:         30px;    /* constant corner radius — never animated */
+  --cnb-gap-bar:        40px;    /* space between logo and menu/toggle */
+  --cnb-pad-bar:         10px 10px 10px 20px;
+
+  --cnb-width-desktop-max: min(92vw, 640px); /* desktop: hugs content, capped */
+  --cnb-width-mobile:      min(92vw, 420px); /* mobile: fixed, stable both states */
+
+  --cnb-panel-mobile-height: calc(100dvh - 104px); /* mobile expanded canvas height */
+  --cnb-panel-desktop-height: 260px;                /* desktop fallback if ever used */
+
+  /* ---- motion tokens ---- */
+  --cnb-ease:            cubic-bezier(0.65, 0, 0.35, 1);
+  --cnb-dur-width:        520ms;
+  --cnb-dur-expand:       520ms;  /* canvas grow/shrink */
+  --cnb-dur-fade:         320ms;  /* canvas background opacity */
+  --cnb-dur-icon:         420ms;  /* + to x rotation */
+  --cnb-dur-text-out:     260ms;  /* closing: text hides immediately */
+  --cnb-dur-text-out-fade: 220ms;
+  --cnb-dur-text-in:      380ms;  /* opening: text reveal, after canvas settles */
+  --cnb-dur-text-in-fade: 340ms;
+  --cnb-delay-text-in:    520ms;  /* = --cnb-dur-expand, so text waits for the canvas */
+
+  --cnb-breakpoint: 640px; /* kept here for reference — media queries can't read
+                               custom properties, so update the literal value below too */
+}
+
+.capsule-navbar,
+.capsule-navbar *{
+  box-sizing: border-box; /* scoped reset — doesn't touch the rest of the host page */
+}
+
+/* ---------- Shell ---------- */
+.capsule-navbar{
+  position: fixed;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+
+  background: var(--cnb-surface);
+  border-radius: var(--cnb-radius); /* constant — only width/height ever animate */
+  box-shadow: var(--cnb-shadow);
+  overflow: hidden;
+
+  width: max-content;
+  max-width: var(--cnb-width-desktop-max);
+
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+  transition: width var(--cnb-dur-width) var(--cnb-ease);
+  contain: layout style; /* isolates reflow/repaint from the rest of the host page */
+}
+
+/* Promoted to its own compositing layer only while a transition is running
+   (toggled by JS, see capsule-navbar.js) — keeps the element off the GPU
+   layer list the rest of the time. */
+.capsule-navbar--animating{
+  will-change: width, max-height;
+}
+
+.capsule-navbar__bar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cnb-gap-bar);
+  padding: var(--cnb-pad-bar);
+  white-space: nowrap;
+}
+
+/* ---------- Logo ---------- */
+.capsule-navbar__logo{
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 0 0 auto;
+  text-decoration: none;
+}
+
+.capsule-navbar__logo-mark{
+  width: 22px;
+  height: 22px;
+  flex: none;
+}
+
+.capsule-navbar__logo-mark circle{
+  fill: none;
+  stroke: var(--cnb-ink);
+  stroke-width: 2.4;
+}
+
+.capsule-navbar__logo-mark path{
+  fill: var(--cnb-ink);
+}
+
+.capsule-navbar__logo-word{
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--cnb-ink);
+}
+
+/* ---------- Desktop menu ---------- */
+.capsule-navbar__menu{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.capsule-navbar__link{
+  color: var(--cnb-ink-faint);
+  text-decoration: none;
+  font-size: 14.5px;
+  font-weight: 500;
+  padding: 9px 16px;
+  border-radius: 999px;
+  transition: color 200ms ease;
+}
+
+.capsule-navbar__link:hover{
+  color: var(--cnb-ink);
+}
+
+.capsule-navbar__link:focus-visible,
+.capsule-navbar__toggle:focus-visible,
+.capsule-navbar__panel-link:focus-visible{
+  outline: 2px solid var(--cnb-ink);
+  outline-offset: 2px;
+}
+
+/* ---------- Mobile toggle (+ / x) ---------- */
+.capsule-navbar__toggle{
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex: 0 0 auto;
+  padding: 0;
+}
+
+.capsule-navbar__icon{
+  position: relative;
+  width: 14px;
+  height: 14px;
+  transition: transform var(--cnb-dur-icon) var(--cnb-ease);
+}
+
+.capsule-navbar__icon::before,
+.capsule-navbar__icon::after{
+  content: "";
+  position: absolute;
+  background: var(--cnb-ink);
+  border-radius: 2px;
+}
+
+.capsule-navbar__icon::before{
+  /* horizontal bar */
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.capsule-navbar__icon::after{
+  /* vertical bar */
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.capsule-navbar--open .capsule-navbar__icon{
+  transform: rotate(45deg); /* + becomes x */
+}
+
+/* ---------- Expanding canvas panel ---------- */
+.capsule-navbar__panel{
+  max-height: 0;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  transition:
+    max-height var(--cnb-dur-expand) var(--cnb-ease),
+    opacity var(--cnb-dur-fade) ease,
+    padding var(--cnb-dur-expand) var(--cnb-ease);
+}
+
+.capsule-navbar--open .capsule-navbar__panel{
+  max-height: var(--cnb-panel-desktop-height);
+  opacity: 1;
+  padding: 8px 24px 34px;
+}
+
+.capsule-navbar__panel-inner{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  transform: translateY(10px);
+  opacity: 0;
+  /* closing: hide text immediately, no delay */
+  transition:
+    transform var(--cnb-dur-text-out) var(--cnb-ease),
+    opacity var(--cnb-dur-text-out-fade) ease;
+}
+
+.capsule-navbar--open .capsule-navbar__panel-inner{
+  transform: translateY(0);
+  opacity: 1;
+  /* opening: wait for the canvas to finish expanding, then reveal text */
+  transition:
+    transform var(--cnb-dur-text-in) var(--cnb-ease) var(--cnb-delay-text-in),
+    opacity var(--cnb-dur-text-in-fade) ease var(--cnb-delay-text-in);
+}
+
+.capsule-navbar__panel-link{
+  color: var(--cnb-ink);
+  text-decoration: none;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 6px 10px;
+}
+
+.capsule-navbar__panel-link:hover{
+  color: var(--cnb-ink-muted);
+}
+
+/* ---------- Breakpoint: mobile ----------
+   Media queries can't read custom properties, so this "640px" must match
+   --cnb-breakpoint above if you change it. */
+@media (max-width: 640px){
+  .capsule-navbar,
+  .capsule-navbar--open{
+    width: var(--cnb-width-mobile); /* stable — never hugs content on mobile */
+  }
+  .capsule-navbar__menu{ display: none; }
+  .capsule-navbar__toggle{ display: flex; }
+
+  .capsule-navbar--open .capsule-navbar__panel{
+    max-height: var(--cnb-panel-mobile-height);
+  }
+}
+
+@media (min-width: 641px){
+  .capsule-navbar__panel{ display: none; } /* desktop never needs the canvas */
+}
+
+@media (prefers-reduced-motion: reduce){
+  .capsule-navbar,
+  .capsule-navbar__icon,
+  .capsule-navbar__panel,
+  .capsule-navbar__panel-inner{
+    transition: none !important;
+  }
+}

@@ -1,0 +1,51 @@
+<!--
+  CAPSULE NAVBAR — component markup (partial, not a full document)
+
+  How to use in a host page:
+    1. Link capsule-navbar.css in <head>
+    2. Paste this block anywhere in <body>
+    3. Include capsule-navbar.js before </body>
+
+  Multiple instances are supported: just repeat this block with a
+  different id on .capsule-navbar__panel (update aria-controls to
+  match). capsule-navbar.js auto-initializes every [data-capsule-navbar]
+  it finds, so no extra JS wiring is needed per instance.
+
+  See demo.html for a full working example.
+-->
+<nav class="capsule-navbar" data-capsule-navbar>
+  <div class="capsule-navbar__bar">
+    <a class="capsule-navbar__logo" href="#" aria-label="Logo">
+      <svg class="capsule-navbar__logo-mark" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7.2a4.8 4.8 0 1 0 0 9.6 4.8 4.8 0 0 0 0-9.6Zm0 2.4a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8Z"/>
+      </svg>
+      <span class="capsule-navbar__logo-word">Logo</span>
+    </a>
+
+    <div class="capsule-navbar__menu">
+      <a class="capsule-navbar__link" href="#">Menu 1</a>
+      <a class="capsule-navbar__link" href="#">Menu 2</a>
+      <a class="capsule-navbar__link" href="#">Menu 3</a>
+    </div>
+
+    <button
+      class="capsule-navbar__toggle"
+      type="button"
+      data-capsule-navbar-toggle
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="capsule-navbar-panel-1"
+    >
+      <span class="capsule-navbar__icon" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="capsule-navbar__panel" id="capsule-navbar-panel-1" data-capsule-navbar-panel>
+    <div class="capsule-navbar__panel-inner">
+      <a class="capsule-navbar__panel-link" href="#">Menu 1</a>
+      <a class="capsule-navbar__panel-link" href="#">Menu 2</a>
+      <a class="capsule-navbar__panel-link" href="#">Menu 3</a>
+    </div>
+  </div>
+</nav>
