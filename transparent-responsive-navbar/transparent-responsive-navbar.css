@@ -1,0 +1,714 @@
+:root {
+  color-scheme: light dark;
+
+  --color-bg: light-dark(#ffffff, #0f1115);
+  --color-text: light-dark(#111111, #f5f7fa);
+  --color-border: light-dark(rgb(17 17 17 / 15%), rgb(255 255 255 / 18%));
+  --color-surface: light-dark(rgb(255 255 255 / 98%), rgb(20 23 29 / 98%));
+  --color-hover: color-mix(in srgb, var(--color-text) 8%, transparent);
+  --color-active: color-mix(in srgb, var(--color-text) 10%, transparent);
+  --color-shadow: light-dark(rgb(0 0 0 / 12%), rgb(0 0 0 / 38%));
+
+  --font-sans:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  /* Typography */
+  --text-nav: 14px;
+  --text-logo: 22px;
+  --text-option: 13px;
+  --text-mobile-menu-link: 18px;
+
+  /* Accessibility */
+  /* Minimum pointer/touch target per WCAG 2.5.8 (AA) / platform HIG guidance.
+     Applied as an invisible expanded hit area, never as a resize of the
+     visible icon — keeps layout gaps and visual density unaffected. */
+  --touch-target-min: 44px;
+
+  /* Desktop Navbar */
+  --nav-height: 56px;
+  --nav-padding-y: 12px;
+  --nav-padding-x: 24px;
+  --nav-gap: 20px;
+  --menu-gap: 20px;
+  --utility-gap: 16px;
+
+  /* Desktop Icon Geometry */
+  --nav-icon-size: 20px;
+  --nav-svg-size: 20px;
+
+  /* Divider */
+  --nav-divider-height: 14px;
+
+  /* Language Dropdown */
+  --dropdown-width: 110px;
+  --dropdown-padding: 6px;
+  --dropdown-item-gap: 4px;
+  --dropdown-offset: 10px;
+
+  /* Mobile Navbar */
+  --mobile-nav-height: 52px;
+  --mobile-padding-y: 10px;
+  --mobile-padding-x: 16px;
+
+  --mobile-logo-size: 18px;
+  --mobile-logo-line-height: 22px;
+
+  /* Mobile Trigger */
+  /* svg-size intentionally scaled down (~0.9x) from desktop rather than
+     matching 1:1, to stay proportionate with the tighter mobile padding
+     (--mobile-padding-x is ~0.67x of --nav-padding-x). Hit area is kept
+     accessible independently via --touch-target-min, so shrinking the
+     visible icon does not reduce tappability. */
+  --mobile-trigger-size: 24px;
+  --mobile-trigger-svg-size: 20px;
+
+  /* Mobile Overlay */
+  --mobile-menu-gap: 18px;
+  --mobile-overlay-padding-y: 16px;
+  --mobile-overlay-padding-x: 16px;
+
+  /* Mobile Utility Geometry */
+  --mobile-utility-size: 20px;
+  --mobile-utility-svg-size: 18px;
+  --mobile-action-gap: 16px;
+
+  /* Mobile Liquid Glass */
+  --mobile-glass-background: light-dark(rgb(255 255 255 / 55%), rgb(15 17 21 / 55%));
+  --mobile-glass-highlight: light-dark(rgb(255 255 255 / 35%), rgb(255 255 255 / 12%));
+  --mobile-glass-blur: 8px;
+  --mobile-glass-saturation: 180%;
+
+  /* Motion */
+  --duration-fast: 180ms;
+  --duration-normal: 220ms;
+  --ease-standard: ease;
+}
+
+/* ============================================================
+   01. BASE / RESET
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  transition: background var(--duration-normal) var(--ease-standard), color var(--duration-normal) var(--ease-standard);
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+}
+
+/* ============================================================
+   02. NAVBAR
+   Parent controls placement, alignment and spacing.
+   ============================================================ */
+
+@scope (.site-header) {
+  .navbar {
+    width: 100%;
+    min-height: var(--nav-height);
+    padding: var(--nav-padding-y) var(--nav-padding-x);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--nav-gap);
+    position: relative;
+    z-index: 100;
+    background: transparent;
+  }
+
+  .logo {
+    color: inherit;
+    text-decoration: none;
+    font-size: var(--text-logo);
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .logo:hover {
+    opacity: 0.62;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--nav-gap);
+  }
+
+  .menu-group {
+    display: flex;
+    align-items: center;
+    gap: var(--menu-gap);
+  }
+
+  .nav-link {
+    color: inherit;
+    text-decoration: none;
+    font-size: var(--text-nav);
+    font-weight: 500;
+    line-height: 20px;
+    white-space: nowrap;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  .nav-link:hover {
+    opacity: 0.62;
+  }
+
+  .nav-divider {
+    width: 1px;
+    height: var(--nav-divider-height);
+    flex: 0 0 1px;
+    background: var(--color-border);
+  }
+
+  .utility-group {
+    display: flex;
+    align-items: center;
+    gap: var(--utility-gap);
+  }
+}
+
+/* ============================================================
+   03. DESKTOP ICON CONTROL
+   Control box and SVG share the same geometry.
+   ============================================================ */
+
+.icon-control {
+  width: var(--nav-icon-size);
+  height: var(--nav-icon-size);
+  padding: 0;
+  margin: 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.icon-control::before {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+  transform: translate(-50%, -50%);
+}
+
+.icon-control:hover {
+  opacity: 0.62;
+}
+
+.icon-control:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+.icon-control svg {
+  width: var(--nav-svg-size);
+  height: var(--nav-svg-size);
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ============================================================
+   04. LANGUAGE SWITCHER
+   Native Popover + Anchor Positioning
+   ============================================================ */
+
+.language-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.language-trigger {
+  anchor-name: --language-trigger;
+}
+
+.language-icon {
+  overflow: hidden;
+}
+
+.language-dropdown {
+  width: var(--dropdown-width);
+  padding: var(--dropdown-padding);
+  display: flex;
+  flex-direction: column;
+  gap: var(--dropdown-item-gap);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px var(--color-shadow);
+  inset: auto;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard);
+}
+
+.language-dropdown:popover-open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@supports (position-area: block-end) {
+  .language-dropdown {
+    position: absolute;
+    position-area: block-end;
+    justify-self: end;
+  }
+}
+
+@supports (position-anchor: --language-trigger) {
+  .language-dropdown {
+    position: absolute;
+    position-anchor: --language-trigger;
+    top: calc(anchor(bottom) + var(--dropdown-offset));
+    right: anchor(right);
+  }
+}
+
+@supports not (position-area: block-end) {
+  .language-dropdown {
+    position: absolute;
+    top: calc(100% + var(--dropdown-offset));
+    right: 0;
+  }
+}
+
+@starting-style {
+  .language-dropdown:popover-open {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.language-option {
+  width: 100%;
+  min-height: 36px;
+  padding: 9px 10px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  font-size: var(--text-option);
+  text-align: center;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-standard), font-weight var(--duration-fast) var(--ease-standard);
+}
+
+.language-option:hover {
+  background: var(--color-hover);
+}
+
+.language-option[aria-current="true"] {
+  background: var(--color-active);
+  font-weight: 600;
+}
+
+.language-option:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+/* ============================================================
+   05. THEME TOGGLE
+   Light = Moon
+   Dark  = Sun
+   ============================================================ */
+
+.theme-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-control .moon-icon,
+.theme-control .sun-icon {
+  display: none;
+}
+
+html[data-theme="light"] .theme-control .moon-icon {
+  display: block;
+}
+
+html[data-theme="dark"] .theme-control .sun-icon {
+  display: block;
+}
+
+/* ============================================================
+   06. MOBILE TRIGGER
+   ============================================================ */
+
+.mobile-trigger {
+  display: none;
+  width: var(--mobile-trigger-size);
+  height: var(--mobile-trigger-size);
+  padding: 0;
+  margin: 0;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.mobile-trigger::before {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+  transform: translate(-50%, -50%);
+}
+
+.mobile-trigger svg {
+  width: var(--mobile-trigger-svg-size);
+  height: var(--mobile-trigger-svg-size);
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mobile-trigger:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+/* ============================================================
+   07. MOBILE OVERLAY
+   ============================================================ */
+
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: var(--mobile-glass-background);
+  backdrop-filter: blur(var(--mobile-glass-blur)) saturate(var(--mobile-glass-saturation));
+  -webkit-backdrop-filter: blur(var(--mobile-glass-blur)) saturate(var(--mobile-glass-saturation));
+  box-shadow: inset 0 1px 0 var(--mobile-glass-highlight);
+}
+
+.mobile-overlay::backdrop {
+  background: transparent;
+}
+
+.mobile-overlay:popover-open {
+  display: block;
+}
+
+.mobile-overlay-content {
+  width: 100%;
+  height: 100%;
+  padding: var(--mobile-overlay-padding-y) var(--mobile-overlay-padding-x);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+/* ============================================================
+   08. MOBILE TOP
+   ============================================================ */
+
+.mobile-overlay-top {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.mobile-close-button {
+  width: var(--mobile-trigger-size);
+  height: var(--mobile-trigger-size);
+  padding: 0;
+  margin: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.mobile-close-button::before {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+  transform: translate(-50%, -50%);
+}
+
+.mobile-close-button svg {
+  width: var(--mobile-trigger-svg-size);
+  height: var(--mobile-trigger-svg-size);
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.mobile-close-button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+/* ============================================================
+   09. MOBILE MIDDLE
+   ============================================================ */
+
+.mobile-overlay-middle {
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.mobile-menu-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--mobile-menu-gap);
+}
+
+.mobile-menu-link {
+  color: inherit;
+  text-decoration: none;
+  font-size: var(--text-mobile-menu-link);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.mobile-menu-link:hover {
+  opacity: 0.62;
+}
+
+.mobile-menu-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+/* ============================================================
+   10. MOBILE BOTTOM
+   ============================================================ */
+
+.mobile-overlay-bottom {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--mobile-action-gap);
+}
+
+.mobile-icon-control {
+  width: var(--mobile-utility-size);
+  height: var(--mobile-utility-size);
+  padding: 0;
+  margin: 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.mobile-icon-control::before {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: var(--touch-target-min);
+  height: var(--touch-target-min);
+  transform: translate(-50%, -50%);
+}
+
+.mobile-icon-control:hover {
+  opacity: 0.62;
+}
+
+.mobile-icon-control:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+.mobile-icon-control svg {
+  width: var(--mobile-utility-svg-size);
+  height: var(--mobile-utility-svg-size);
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ============================================================
+   11. MOBILE LANGUAGE MENU
+   ============================================================ */
+
+.mobile-language-menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(var(--mobile-utility-size) + var(--dropdown-offset));
+  width: var(--dropdown-width);
+  padding: var(--dropdown-padding);
+  display: none;
+  flex-direction: column;
+  gap: var(--dropdown-item-gap);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px var(--color-shadow);
+}
+
+.mobile-language-menu.is-open {
+  display: flex;
+}
+
+/* ============================================================
+   12. RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 680px) {
+  :root {
+    --nav-height: var(--mobile-nav-height);
+    --nav-padding-y: var(--mobile-padding-y);
+    --nav-padding-x: var(--mobile-padding-x);
+  }
+
+  @scope (.site-header) {
+    .navbar {
+      min-height: var(--mobile-nav-height);
+    }
+
+    .logo {
+      font-size: var(--mobile-logo-size);
+      line-height: var(--mobile-logo-line-height);
+    }
+
+    .nav-right {
+      display: none;
+    }
+  }
+
+  .mobile-trigger {
+    display: flex;
+  }
+
+  .language-dropdown {
+    display: none !important;
+  }
+}
+
+@media (min-width: 681px) {
+  .mobile-trigger,
+  .mobile-overlay {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   13. REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   14. POPOVER FALLBACK
+   ============================================================ */
+
+html.no-popover .language-dropdown {
+  display: none;
+}
+
+html.no-popover .language-dropdown.is-open {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
