@@ -46,3 +46,9 @@ The transparent responsive navbar documentation explicitly references these plat
 ## Maintenance Notes
 
 Keep component-specific implementation guidance in each component's own documentation. Use this page as the cross-project index for reusable entry points and external references.
+
+
+---
+
+- https://threejs.paris/
+- https://www.brrranding.com/
