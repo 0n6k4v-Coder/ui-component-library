@@ -52,3 +52,4 @@ Keep component-specific implementation guidance in each component's own document
 
 - https://threejs.paris/
 - https://www.brrranding.com/
+- https://www.cindyly.design/
