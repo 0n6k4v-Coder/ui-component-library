@@ -53,3 +53,15 @@ Keep component-specific implementation guidance in each component's own document
 - https://threejs.paris/
 - https://www.brrranding.com/
 - https://www.cindyly.design/
+
+---
+
+- https://www.nextcyber.com.au/
+- https://www.fastnedcharging.com/
+- https://www.networksolutions.com/
+- https://aws.amazon.com/
+- https://www.cisco.com/
+- https://sunbeam.framer.media/
+- https://mindtrip.ai/
+- https://www.copilotkit.ai/
+- https://superai.aiat.or.th/2024/
