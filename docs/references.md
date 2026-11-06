@@ -66,3 +66,4 @@ Keep component-specific implementation guidance in each component's own document
 - https://www.copilotkit.ai/
 - https://superai.aiat.or.th/2024/
 - https://elevenlabs.io/
+- https://www.magnific.com/
